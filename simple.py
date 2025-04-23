@@ -2,37 +2,30 @@ import ttkbootstrap as ttk
 from tkinter import StringVar
 
 # Fonction appelée lorsqu'un bouton numérique est pressé
-def action_button_numpad_number(nbr: str):
+def action_button_add_input_screen(msg: str):
     global label_screen_text
     current_text = label_screen_text.get()
     if current_text == "...":
         current_text = ""
-    label_screen_text.set(current_text + nbr)
+    label_screen_text.set(current_text + msg)
 
 # Fonction appelée lorsque le bouton "Effacer" est pressé
 def action_button_numpad_clear():
     global label_screen_text
     label_screen_text.set("...")
 
-# Fonction appelée lorsque le bouton de division est pressé
-def action_button_numpad_division():
-    pass
-
-# Fonction appelée lorsque le bouton de multiplication est pressé
-def action_button_numpad_multiplication():
-    pass
-
-# Fonction appelée lorsque le bouton de soustraction est pressé
-def action_button_numpad_subtraction():
-    pass
-
-# Fonction appelée lorsque le bouton d'addition est pressé
-def action_button_numpad_addition():
-    pass
-
 # Fonction appelée lorsque le bouton "égal" est pressé
 def action_button_numpad_equals():
-    pass
+    global label_screen_text
+    current_text = label_screen_text.get()
+    if current_text == "...":
+        label_screen_text.set("...")
+    else:
+        try:
+            result = eval(current_text)
+            label_screen_text.set(str(result))
+        except Exception as e:
+            label_screen_text.set("Erreur: " + str(e))
 
 # Fonction pour créer le pavé numérique dans un cadre donné
 def create_numpad(frame: ttk.Frame):
@@ -41,7 +34,7 @@ def create_numpad(frame: ttk.Frame):
     column = 0  # Commencer à la première colonne
     for i in range(1, 10):  # Boucle pour créer les boutons de 1 à 9
         # Créer un bouton avec le texte correspondant au nombre et la commande associée
-        button_numpad[i-1] = ttk.Button(frame, text=str(i), command=lambda i=i: action_button_numpad_number(str(i)))
+        button_numpad[i-1] = ttk.Button(frame, text=str(i), command=lambda i=i: action_button_add_input_screen(str(i)))
         # Placer le bouton dans la grille avec un padding et le faire s'étendre
         button_numpad[i-1].grid(row=row, column=column, padx=5, pady=5, sticky="nsew")
         if column == 2:  # Si on atteint la troisième colonne, passer à la ligne suivante
@@ -104,12 +97,12 @@ def create_new_window(title: str, size: tuple) -> ttk.Window:
 
     # Création des boutons d'opérateurs, du bouton 0, du bouton virgule et du bouton effacer
     ttk.Button(frame_numpad, text="Effacer", command=action_button_numpad_clear).grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text="/", command=action_button_numpad_division).grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text="X", command=action_button_numpad_multiplication).grid(row=0, column=2, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text="-", command=action_button_numpad_subtraction).grid(row=0, column=3, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text="+", command=action_button_numpad_addition).grid(row=1, rowspan=2, column=3, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text="/", command=lambda: action_button_add_input_screen("/")).grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text="X", command=lambda: action_button_add_input_screen("X")).grid(row=0, column=2, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text="-", command=lambda: action_button_add_input_screen("-")).grid(row=0, column=3, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text="+", command=lambda: action_button_add_input_screen("+")).grid(row=1, rowspan=2, column=3, padx=5, pady=5, sticky="nsew")
     ttk.Button(frame_numpad, text="=", command=action_button_numpad_equals).grid(row=3, rowspan=2, column=3, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text="0", command=lambda: action_button_numpad_number("0")).grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text=".", command=action_button_numpad_decimal_point).grid(row=4, column=2, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text="0", command=lambda: action_button_add_input_screen("0")).grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text=".", command=lambda: action_button_add_input_screen(",")).grid(row=4, column=2, padx=5, pady=5, sticky="nsew")
 
     return root

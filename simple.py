@@ -98,11 +98,11 @@ def create_new_window(title: str, size: tuple) -> ttk.Window:
     # Création des boutons d'opérateurs, du bouton 0, du bouton virgule et du bouton effacer
     ttk.Button(frame_numpad, text="Effacer", command=action_button_numpad_clear).grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
     ttk.Button(frame_numpad, text="/", command=lambda: action_button_add_input_screen("/")).grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text="X", command=lambda: action_button_add_input_screen("X")).grid(row=0, column=2, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text="X", command=lambda: action_button_add_input_screen("*")).grid(row=0, column=2, padx=5, pady=5, sticky="nsew")
     ttk.Button(frame_numpad, text="-", command=lambda: action_button_add_input_screen("-")).grid(row=0, column=3, padx=5, pady=5, sticky="nsew")
     ttk.Button(frame_numpad, text="+", command=lambda: action_button_add_input_screen("+")).grid(row=1, rowspan=2, column=3, padx=5, pady=5, sticky="nsew")
     ttk.Button(frame_numpad, text="=", command=action_button_numpad_equals).grid(row=3, rowspan=2, column=3, padx=5, pady=5, sticky="nsew")
     ttk.Button(frame_numpad, text="0", command=lambda: action_button_add_input_screen("0")).grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text=".", command=lambda: action_button_add_input_screen(",")).grid(row=4, column=2, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text=".", command=lambda: action_button_add_input_screen(".")).grid(row=4, column=2, padx=5, pady=5, sticky="nsew")
 
     return root

@@ -1,12 +1,18 @@
 import ttkbootstrap as ttk
+from tkinter import StringVar
 
 # Fonction appelée lorsqu'un bouton numérique est pressé
 def action_button_numpad_number(nbr: str):
-    print(nbr)
+    global label_screen_text
+    current_text = label_screen_text.get()
+    if current_text == "...":
+        current_text = ""
+    label_screen_text.set(current_text + nbr)
 
 # Fonction appelée lorsque le bouton "Effacer" est pressé
 def action_button_numpad_clear():
-    pass
+    global label_screen_text
+    label_screen_text.set("...")
 
 # Fonction appelée lorsque le bouton de division est pressé
 def action_button_numpad_division():
@@ -63,6 +69,8 @@ def create_new_window(title: str, size: tuple) -> ttk.Window:
     :return: L'instance de la nouvelle fenêtre créée.
     :rtype: ttk.Window
     """
+    global label_screen_text
+
     root = ttk.Window(
         title=title,
         themename="superhero",
@@ -71,6 +79,9 @@ def create_new_window(title: str, size: tuple) -> ttk.Window:
     root.place_window_center()  # Centre la fenêtre sur l'écran
     root.columnconfigure(0, weight=1)  # Configure la colonne pour s'étendre
     root.rowconfigure(1, weight=1)  # Configure la ligne pour s'étendre
+
+    # Initialisation de la variable globale après la création de la fenêtre principale
+    label_screen_text = StringVar(value="...")
 
     # Cadre pour l'écran de la calculatrice
     frame_screen_calculator = ttk.Frame(root)
@@ -86,20 +97,19 @@ def create_new_window(title: str, size: tuple) -> ttk.Window:
         frame_numpad.rowconfigure(i, weight=1)
 
     # Label pour afficher le résultat ou l'entrée actuelle
-    label = ttk.Label(frame_screen_calculator, text="...", font=("Helvetica", 16))
-    label.pack(padx=10, pady=10, anchor="center")  # Centre le label dans le cadre
+    label_screen = ttk.Label(frame_screen_calculator, text="...", font=("Helvetica", 16), textvariable=label_screen_text)
+    label_screen.pack(padx=10, pady=10, anchor="center")  # Centre le label dans le cadre
 
     create_numpad(frame_numpad)  # Crée le pavé numérique dans le cadre
 
     # Création des boutons d'opérateurs, du bouton 0, du bouton virgule et du bouton effacer
-    ttk.Button(frame_numpad, text="Effacer", command=lambda: action_button_numpad_clear()).grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text="/", command=lambda: action_button_numpad_division()).grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text="X", command=lambda: action_button_numpad_multiplication()).grid(row=0, column=2, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text="-", command=lambda: action_button_numpad_subtraction()).grid(row=0, column=3, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text="+", command=lambda: action_button_numpad_addition()).grid(row=1, rowspan=2, column=3, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text="=", command=lambda: action_button_numpad_equals()).grid(row=3, rowspan=2, column=3, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text="Effacer", command=action_button_numpad_clear).grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text="/", command=action_button_numpad_division).grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text="X", command=action_button_numpad_multiplication).grid(row=0, column=2, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text="-", command=action_button_numpad_subtraction).grid(row=0, column=3, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text="+", command=action_button_numpad_addition).grid(row=1, rowspan=2, column=3, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text="=", command=action_button_numpad_equals).grid(row=3, rowspan=2, column=3, padx=5, pady=5, sticky="nsew")
     ttk.Button(frame_numpad, text="0", command=lambda: action_button_numpad_number("0")).grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="nsew")
-    ttk.Button(frame_numpad, text=".", command=lambda: action_button_numpad_decimal_point()).grid(row=4, column=2, padx=5, pady=5, sticky="nsew")
+    ttk.Button(frame_numpad, text=".", command=action_button_numpad_decimal_point).grid(row=4, column=2, padx=5, pady=5, sticky="nsew")
 
     return root
-
